@@ -7,13 +7,37 @@ export default function MessageInput({
     theme = '#6ea9d7'
 }) {
     const [text, setText] = useState("")
+    const [submit, setSubmit] = React.useState(false);
     
     const handleSubmit = () => {
-        if (text.trim().length > 0) {
+        if (!submit && text.trim().length > 0) {
             onSendMessage && onSendMessage(text.trim())
             setText("")
+
+            setSubmit(true);
+            setTimeout(() => {
+                setSubmit(false);
+            }, 500);
         }
     }
+
+    const button = submit ?
+          <svg xmlns="http://www.w3.org/2000/svg" // check-circle
+               viewBox="0 0 512 512"
+               fill={theme}
+               width="24"
+               height="24"
+          >
+               <path d="M504 256c0 136.967-111.033 248-248 248S8 392.967 8 256 119.033 8 256 8s248 111.033 248 248zM227.314 387.314l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.249-16.379-6.249-22.628 0L216 308.118l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.249 16.379 6.249 22.628.001z"/>
+          </svg>
+        : <svg xmlns="http://www.w3.org/2000/svg" // paper-plane
+              viewBox="0 0 512 512"
+              fill={theme}
+              width="24"
+              height="24"
+          >
+              <path d="M476 3.2L12.5 270.6c-18.1 10.4-15.8 35.6 2.2 43.2L121 358.4l287.3-253.2c5.5-4.9 13.3 2.6 8.6 8.3L176 407v80.5c0 23.6 28.5 32.9 42.5 15.8L282 426l124.6 52.2c14.2 6 30.4-2.9 33-18.2l72-432C515 7.8 493.3-6.8 476 3.2z"/>
+          </svg>;
 
     return (
         <div className="message-input">
@@ -46,14 +70,7 @@ export default function MessageInput({
                 </div>
 
                 <div className="send-container" onClick={handleSubmit}>
-                    <svg
-                        fill={theme}
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 512 512" >
-                        <path d="M498.1 5.6c10.1 7 15.4 19.1 13.5 31.2l-64 416c-1.5 9.7-7.4 18.2-16 23s-18.9 5.4-28 1.6L284 427.7l-68.5 74.1c-8.9 9.7-22.9 12.9-35.2 8.1S160 493.2 160 480V396.4c0-4 1.5-7.8 4.2-10.7L331.8 202.8c5.8-6.3 5.6-16-.4-22s-15.7-6.4-22-.7L106 360.8 17.7 316.6C7.1 311.3 .3 300.7 0 288.9s5.9-22.8 16.1-28.7l448-256c10.7-6.1 23.9-5.5 34 1.4z" />
-                    </svg>
+                    {button}
                 </div>
             </form >
         </div>
